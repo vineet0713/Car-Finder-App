@@ -1,32 +1,40 @@
 //
-//  VehicleTableViewController.swift
+//  TrimsTableViewController.swift
 //  Car Finder
 //
-//  Created by Vineet Joshi on 3/5/18.
+//  Created by Vineet Joshi on 3/8/18.
 //  Copyright © 2018 Vineet Joshi. All rights reserved.
 //
 
 import UIKit
 
-class VehicleTableViewController: UITableViewController {
+class TrimsTableViewController: UITableViewController {
     
     // MARK: - Properties
     
     var activityIndicator: UIActivityIndicatorView!
     
-    let reuseIdentifier = "vehicleCell"
+    let reuseIdentifier = "trimCell"
     
-    var titles: [String] = []
-    var statistics: [String] = []
+    var trims: [String] = []
+    var years: [String] = []
     
-    var vehicleId: String!
+    var model: String! {
+        willSet(newModel) {
+            // set the title to the specified make
+            self.title = newModel
+            if activityIndicator != nil {
+                reload()
+            }
+        }
+    }
+    
+    var selectedVehicleId: String!
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.title = "Statistics"
         
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.center = self.view.center
@@ -34,19 +42,22 @@ class VehicleTableViewController: UITableViewController {
         
         tableView.backgroundView = activityIndicator
         tableView.separatorStyle = .none
+        
+        reload()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
+    // MARK: - Helper Functions
+    
+    func reload() {
+        print("trims are reloading")
         activityIndicator.startAnimating()
         
         DispatchQueue.global(qos: .userInitiated).async {
             sleep(1)
             
             // get the data!
-            self.titles = ["Engine Position:", "Cylinders:", "Valves Per Cylinder:", "Type:", "Displacement (L):", "Horsepower:", "Torque (Lb-Ft):", "Fuel:", "Capacity (gal):", "Drive:", "Transmission:", "Weight (Lb):"]
-            self.statistics = ["Front", "4", "4", "Inline", "1.8", "132", "null", "Regular Unleaded", "12", "Front Wheel Drive", "Automatic", "3042"]
+            self.trims = ["LP 700-4 2dr Coupe AWD (6.5L 12cyl 7AM)", "LP 700-4 Roadster 2dr Convertible AWD (6.5L 12cyl 7AM)"]
+            self.years = ["2018", "2018"]
             
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
@@ -60,26 +71,31 @@ class VehicleTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return titles.count
+        return trims.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! VehicleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TrimTableViewCell
         
-        cell.titleLabel.text = titles[indexPath.row]
-        cell.statisticLabel.text = statistics[indexPath.row]
+        cell.titleLabel.text = trims[indexPath.row]
+        cell.yearLabel.text = years[indexPath.row]
         
         return cell
     }
     
-    /*
-    // MARK: - Navigation
-
+    // MARK: - Table View Delegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // set the selected vehicle to pass to the VehicleTableViewController
+        
+        performSegue(withIdentifier: "trimToVehicleSegue", sender: self)
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let destinationVC = segue.destination as? VehicleTableViewController {
+            destinationVC.vehicleId = selectedVehicleId
+        }
     }
-    */
-
+    
 }

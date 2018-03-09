@@ -112,7 +112,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Compare Vehicles" id="Go2-Yp-l4J"/>
                     <connections>
-                        <segue destination="U5d-ev-sN6" kind="presentation" id="sK4-sm-LYy"/>
+                        <segue destination="U5d-ev-sN6" kind="presentation" identifier="setupToFavoritesSegue" id="sK4-sm-LYy"/>
                         <segue destination="BIJ-Ai-4kB" kind="show" identifier="setupToCompareSegue" id="hsr-4B-eQf"/>
                     </connections>
                 </viewController>
@@ -129,7 +129,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="obO-1y-Eyh">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="favoriteCell" id="obO-1y-Eyh">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="obO-1y-Eyh" id="ArZ-vN-Dwc">
@@ -189,13 +189,54 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="makeCell" id="5JN-eV-QMv">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="makeCell" rowHeight="75" id="5JN-eV-QMv" customClass="MakeTableViewCell" customModule="Car_Finder" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5JN-eV-QMv" id="pM5-2e-aT5">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u8R-Y8-ZFZ">
+                                            <rect key="frame" x="306" y="11" width="53" height="53"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="53" id="Kef-Lf-AQU"/>
+                                                <constraint firstAttribute="width" constant="53" id="Lfr-K2-cjT"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5P9-30-fTh">
+                                            <rect key="frame" x="16" y="11" width="282" height="23"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="abL-VS-w83">
+                                            <rect key="frame" x="16" y="42" width="282" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="22" id="lAQ-Af-did"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="u8R-Y8-ZFZ" firstAttribute="leading" secondItem="5P9-30-fTh" secondAttribute="trailing" constant="8" symbolic="YES" id="74R-f7-Hs4"/>
+                                        <constraint firstItem="u8R-Y8-ZFZ" firstAttribute="trailing" secondItem="pM5-2e-aT5" secondAttribute="trailingMargin" id="No2-fe-xGO"/>
+                                        <constraint firstItem="5P9-30-fTh" firstAttribute="leading" secondItem="pM5-2e-aT5" secondAttribute="leadingMargin" id="UEp-0h-baB"/>
+                                        <constraint firstItem="5P9-30-fTh" firstAttribute="leading" secondItem="abL-VS-w83" secondAttribute="leading" id="WVJ-b5-Qns"/>
+                                        <constraint firstItem="abL-VS-w83" firstAttribute="bottom" secondItem="u8R-Y8-ZFZ" secondAttribute="bottom" id="XAH-g3-fZp"/>
+                                        <constraint firstItem="u8R-Y8-ZFZ" firstAttribute="leading" secondItem="abL-VS-w83" secondAttribute="trailing" constant="8" symbolic="YES" id="fKS-hh-kEe"/>
+                                        <constraint firstItem="abL-VS-w83" firstAttribute="bottom" secondItem="pM5-2e-aT5" secondAttribute="bottomMargin" id="ig9-fR-yoJ"/>
+                                        <constraint firstItem="5P9-30-fTh" firstAttribute="top" secondItem="u8R-Y8-ZFZ" secondAttribute="top" id="mjz-d7-eNf"/>
+                                        <constraint firstItem="abL-VS-w83" firstAttribute="top" secondItem="5P9-30-fTh" secondAttribute="bottom" constant="8" symbolic="YES" id="mqK-1F-b66"/>
+                                        <constraint firstItem="5P9-30-fTh" firstAttribute="top" secondItem="pM5-2e-aT5" secondAttribute="topMargin" id="pBb-Lf-Phs"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="commonalityImage" destination="u8R-Y8-ZFZ" id="Bmz-Tc-2zx"/>
+                                    <outlet property="countryLabel" destination="abL-VS-w83" id="dMb-U2-51n"/>
+                                    <outlet property="titleLabel" destination="5P9-30-fTh" id="wOl-AC-efe"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -210,7 +251,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5HB-47-WcT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1710" y="-1115"/>
+            <point key="canvasLocation" x="1709.5999999999999" y="-1115.8920539730136"/>
         </scene>
         <!--Models Table View Controller-->
         <scene sceneID="QyV-po-9gl">
@@ -221,13 +262,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="modelCell" id="Tct-1N-YLN">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="modelCell" rowHeight="75" id="Tct-1N-YLN" customClass="ModelTableViewCell" customModule="Car_Finder" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Tct-1N-YLN" id="Ohg-xM-Gne">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUk-ac-10k">
+                                            <rect key="frame" x="16" y="19" width="343" height="36"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="vUk-ac-10k" firstAttribute="leading" secondItem="Ohg-xM-Gne" secondAttribute="leadingMargin" id="2EV-WG-bmo"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="vUk-ac-10k" secondAttribute="bottom" constant="9" id="Gyh-09-1lT"/>
+                                        <constraint firstItem="vUk-ac-10k" firstAttribute="trailing" secondItem="Ohg-xM-Gne" secondAttribute="trailingMargin" id="fCr-3g-1nv"/>
+                                        <constraint firstItem="vUk-ac-10k" firstAttribute="centerY" secondItem="Ohg-xM-Gne" secondAttribute="centerY" id="i6f-4a-6Ya"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="vUk-ac-10k" id="hOq-dx-ldg"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -236,29 +294,59 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <segue destination="xBR-5L-hgE" kind="show" identifier="modelToYearSegue" id="wwU-lt-Qei"/>
+                        <segue destination="xBR-5L-hgE" kind="show" identifier="modelToTrimSegue" id="wwU-lt-Qei"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y5O-UA-wAJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2630" y="-1115"/>
+            <point key="canvasLocation" x="2629.5999999999999" y="-1115.8920539730136"/>
         </scene>
-        <!--Year Table View Controller-->
+        <!--Trims Table View Controller-->
         <scene sceneID="kOH-I3-nXl">
             <objects>
-                <tableViewController id="xBR-5L-hgE" customClass="YearTableViewController" customModule="Car_Finder" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="xBR-5L-hgE" customClass="TrimsTableViewController" customModule="Car_Finder" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="F54-MG-BvH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="yearCell" id="Tgx-uc-ixT">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="trimCell" rowHeight="90" id="Tgx-uc-ixT" customClass="TrimTableViewCell" customModule="Car_Finder" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Tgx-uc-ixT" id="xYN-X0-g7m">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trim" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NUt-jU-Nio">
+                                            <rect key="frame" x="16" y="18" width="343" height="25"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ju6-E1-UAR">
+                                            <rect key="frame" x="16" y="51" width="343" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="dUf-pd-cG2"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="NUt-jU-Nio" firstAttribute="leading" secondItem="ju6-E1-UAR" secondAttribute="leading" id="1tl-lK-xv3"/>
+                                        <constraint firstItem="NUt-jU-Nio" firstAttribute="trailing" secondItem="xYN-X0-g7m" secondAttribute="trailingMargin" id="Aok-QL-rJO"/>
+                                        <constraint firstItem="ju6-E1-UAR" firstAttribute="top" secondItem="NUt-jU-Nio" secondAttribute="bottom" constant="8" symbolic="YES" id="fDC-8W-IVI"/>
+                                        <constraint firstItem="NUt-jU-Nio" firstAttribute="trailing" secondItem="ju6-E1-UAR" secondAttribute="trailing" id="lXm-Ib-imW"/>
+                                        <constraint firstItem="NUt-jU-Nio" firstAttribute="top" secondItem="xYN-X0-g7m" secondAttribute="topMargin" constant="7" id="mOG-tV-jA8"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="ju6-E1-UAR" secondAttribute="bottom" constant="8" id="uga-9Y-5mD"/>
+                                        <constraint firstItem="NUt-jU-Nio" firstAttribute="leading" secondItem="xYN-X0-g7m" secondAttribute="leadingMargin" id="v8s-6w-Imw"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="NUt-jU-Nio" id="kjy-BN-F2t"/>
+                                    <outlet property="yearLabel" destination="ju6-E1-UAR" id="xOt-XJ-gIY"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -267,12 +355,12 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <segue destination="T63-FM-tvJ" kind="show" identifier="yearToVehicleSegue" id="9rB-xP-0kP"/>
+                        <segue destination="T63-FM-tvJ" kind="show" identifier="trimToVehicleSegue" id="9rB-xP-0kP"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RXH-aw-818" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3620" y="-1116"/>
+            <point key="canvasLocation" x="3620" y="-1116.7916041979011"/>
         </scene>
         <!--Compare Table View Controller-->
         <scene sceneID="KGx-yt-Ojw">
@@ -283,7 +371,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="KpQ-yH-34F">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="compareCell" id="KpQ-yH-34F">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KpQ-yH-34F" id="pff-kc-ovc">
@@ -306,18 +394,47 @@
         <scene sceneID="dhV-87-3xu">
             <objects>
                 <tableViewController id="T63-FM-tvJ" customClass="VehicleTableViewController" customModule="Car_Finder" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="RSy-2y-eGi">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="RSy-2y-eGi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="vehicleCell" id="DNk-f9-c70">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="vehicleCell" rowHeight="75" id="DNk-f9-c70" customClass="VehicleTableViewCell" customModule="Car_Finder" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DNk-f9-c70" id="mCx-cr-O6q">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="HJ3-ex-16y">
+                                            <rect key="frame" x="16" y="15" width="343" height="45"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUJ-oc-E9O">
+                                                    <rect key="frame" x="0.0" y="0.0" width="119.5" height="45"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Statistic" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p5Q-LL-C1g">
+                                                    <rect key="frame" x="119.5" y="0.0" width="223.5" height="45"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="HJ3-ex-16y" firstAttribute="top" secondItem="mCx-cr-O6q" secondAttribute="topMargin" constant="4" id="803-nj-bnd"/>
+                                        <constraint firstItem="HJ3-ex-16y" firstAttribute="leading" secondItem="mCx-cr-O6q" secondAttribute="leadingMargin" id="9qm-vz-Fhv"/>
+                                        <constraint firstItem="HJ3-ex-16y" firstAttribute="centerY" secondItem="mCx-cr-O6q" secondAttribute="centerY" id="jw9-tj-Oy8"/>
+                                        <constraint firstItem="HJ3-ex-16y" firstAttribute="trailing" secondItem="mCx-cr-O6q" secondAttribute="trailingMargin" id="qQZ-mi-RHq"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="statisticLabel" destination="p5Q-LL-C1g" id="z8m-6x-ZU5"/>
+                                    <outlet property="titleLabel" destination="SUJ-oc-E9O" id="LD7-Qf-Yt9"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -328,7 +445,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1m4-5x-JbQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3620" y="206"/>
+            <point key="canvasLocation" x="3620" y="205.54722638680661"/>
         </scene>
         <!--Research-->
         <scene sceneID="XQD-LU-hDK">
@@ -389,6 +506,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="FJT-IY-ny3"/>
+        <segue reference="9rB-xP-0kP"/>
     </inferredMetricsTieBreakers>
 </document>
