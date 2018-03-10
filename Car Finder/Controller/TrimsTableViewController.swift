@@ -93,7 +93,7 @@ class TrimsTableViewController: UITableViewController {
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? VehicleTableViewController {
+        if let destinationVC = segue.destination as? VehicleViewController {
             destinationVC.vehicleId = selectedVehicleId
         }
     }
