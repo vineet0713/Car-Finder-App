@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class FavoritesTableViewController: UITableViewController {
     
@@ -14,8 +15,7 @@ class FavoritesTableViewController: UITableViewController {
     
     let reuseIdentifier = "favoriteCell"
     
-    var vehicles: [String] = []
-    var trims: [String] = []
+    var favorites: [Favorite] = []
     
     var selectedModelID: String!
     
@@ -24,41 +24,97 @@ class FavoritesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        /*
         // load favorites from Core Data!
         vehicles = ["2018 Toyota Prius", "2018 Lamborghini Aventador"]
         trims = ["Five 4dr Hatchback (1.8L 4cyl gas/electric hybrid CVT)", "LP 700-4 2dr Coupe AWD (6.5L 12cyl 7AM)"]
+        */
+        
+        makeFetchRequest()
+        
+        updateTableSeparatorStyle()
+        
+        tableView.reloadData()
+    }
+    
+    // MARK: - Helper Functions
+    
+    func makeFetchRequest() {
+        let fetchRequest: NSFetchRequest<Favorite> = Favorite.fetchRequest()
+        
+        // order doesn't matter, so no need to use NSSortDescriptors
+        fetchRequest.sortDescriptors = []
+        
+        if let result = try? DataController.sharedInstance().viewContext.fetch(fetchRequest) {
+            favorites = result
+        } else {
+            showAlert(title: "Unable to Load Favorites", message: "The fetch could not be performed.")
+        }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func updateTableSeparatorStyle() {
+        if favorites.count == 0 {
+            tableView.separatorStyle = .none
+        } else {
+            tableView.separatorStyle = .singleLine
+        }
     }
     
     // MARK: - Table View Data Source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return vehicles.count
+        return favorites.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! FavoriteTableViewCell
+        let favorite = favorites[indexPath.row]
         
-        cell.titleLabel.text = vehicles[indexPath.row]
-        cell.trimLabel.text = trims[indexPath.row]
+        cell.titleLabel.text = favorite.modelTitle
+        cell.trimLabel.text = favorite.modelTrim
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let favoriteToDelete = favorites[indexPath.row]
+            DataController.sharedInstance().viewContext.delete(favoriteToDelete)
+            guard DataController.sharedInstance().saveViewContext() else {
+                self.showAlert(title: "Save Failed", message: "Unable to remove the favorite model.")
+                return
+            }
+            
+            favorites.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            updateTableSeparatorStyle()
+        }
     }
     
     // MARK: - Table View Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let favorite = favorites[indexPath.row]
+        
         // set the selected vehicle to pass to the VehicleTableViewController
+        selectedModelID = favorite.modelID
         
         performSegue(withIdentifier: "favoriteToVehicleSegue", sender: self)
     }

@@ -12,7 +12,8 @@ class CompareSetupViewController: UIViewController {
     
     // MARK: - Properties
     
-    
+    let firstDefaultTitle = "Vehicle 1"
+    let secondDefaultTitle = "Vehicle 2"
     
     // MARK: - IBOutlets
     
@@ -46,6 +47,9 @@ class CompareSetupViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        firstTitleLabel.text = firstDefaultTitle
+        secondTitleLabel.text = secondDefaultTitle
     }
     
     // MARK: - Navigation

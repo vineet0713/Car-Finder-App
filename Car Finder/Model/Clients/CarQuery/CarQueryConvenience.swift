@@ -172,13 +172,15 @@ extension CarQueryClient {
                     completionHandler(false, "Could not find the key \(CarQueryResponseKeys.ModelYear).")
                     return
                 }
+                let updatedModelYear = (modelYear == "") ? "[year unavailable]" : modelYear
                 
                 guard let modelTrim = trim[CarQueryResponseKeys.ModelTrim] as? String else {
                     completionHandler(false, "Could not find the key \(CarQueryResponseKeys.ModelTrim).")
                     return
                 }
+                let updatedModelTrim = (modelTrim == "") ? "[trim unavailable]" : modelTrim
                 
-                SharedData.sharedInstance().trims.append(Trim(modelID: modelID, modelYear: modelYear, modelTrim: modelTrim))
+                SharedData.sharedInstance().trims.append(Trim(modelID: modelID, modelYear: updatedModelYear, modelTrim: updatedModelTrim))
             }
             
             completionHandler(true, nil)
@@ -221,6 +223,8 @@ extension CarQueryClient {
             let tupleArray: [(String, Any)] = parsedResult.flatMap { $0 }
             let statisticDictionary = Dictionary(tupleArray, uniquingKeysWith: { (first, last) in last })
             
+            // gets the statistics for this Vehicle
+            
             var resultStatistics: [String] = []
             
             let resultKeys = CarQueryResponseKeys.statisticKeys
@@ -238,7 +242,31 @@ extension CarQueryClient {
                 }
             }
             
-            SharedData.sharedInstance().displayVehicle = Vehicle(statistics: resultStatistics)
+            // gets the basic information for this Vehicle (to potentially use if user stores this Vehicle as favorite)
+            
+            guard let modelYear = statisticDictionary[CarQueryResponseKeys.ModelYear] as? String else {
+                completionHandler(false, "Could not find the key \(CarQueryResponseKeys.ModelYear).")
+                return
+            }
+            
+            guard let makeName = statisticDictionary[CarQueryResponseKeys.MakeDisplay] as? String else {
+                completionHandler(false, "Could not find the key \(CarQueryResponseKeys.MakeDisplay).")
+                return
+            }
+            
+            guard let modelName = statisticDictionary[CarQueryResponseKeys.ModelName] as? String else {
+                completionHandler(false, "Could not find the key \(CarQueryResponseKeys.ModelName).")
+                return
+            }
+            
+            let modelTitle = modelYear + " " + makeName + " " + modelName
+            
+            guard let modelTrim = statisticDictionary[CarQueryResponseKeys.ModelTrim] as? String else {
+                completionHandler(false, "Could not find the key \(CarQueryResponseKeys.ModelTrim).")
+                return
+            }
+            
+            SharedData.sharedInstance().displayVehicle = Vehicle(statistics: resultStatistics, title: modelTitle, trim: modelTrim)
             
             completionHandler(true, nil)
         }

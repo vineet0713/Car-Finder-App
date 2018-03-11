@@ -18,6 +18,7 @@
 		6594E04D205373EA00A7EA40 /* SelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594E04C205373EA00A7EA40 /* SelectTableViewCell.swift */; };
 		6594E04F2053767200A7EA40 /* CompareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594E04E2053767200A7EA40 /* CompareTableViewCell.swift */; };
 		65BD2A9C2055B3D700FC71E4 /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD2A9B2055B3D700FC71E4 /* Vehicle.swift */; };
+		65BD2AA02055C9DF00FC71E4 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD2A9F2055C9DF00FC71E4 /* DataController.swift */; };
 		65C3996B204E11AB00158177 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C3996A204E11AB00158177 /* AppDelegate.swift */; };
 		65C39970204E11AB00158177 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65C3996E204E11AB00158177 /* Main.storyboard */; };
 		65C39973204E11AB00158177 /* Car_Finder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 65C39971204E11AB00158177 /* Car_Finder.xcdatamodeld */; };
@@ -67,6 +68,7 @@
 		6594E04C205373EA00A7EA40 /* SelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTableViewCell.swift; sourceTree = "<group>"; };
 		6594E04E2053767200A7EA40 /* CompareTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareTableViewCell.swift; sourceTree = "<group>"; };
 		65BD2A9B2055B3D700FC71E4 /* Vehicle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicle.swift; sourceTree = "<group>"; };
+		65BD2A9F2055C9DF00FC71E4 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		65C39967204E11AB00158177 /* Car Finder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Car Finder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65C3996A204E11AB00158177 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65C3996F204E11AB00158177 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -118,6 +120,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		65BD2A9D2055C9B300FC71E4 /* Non Persistent Data */ = {
+			isa = PBXGroup;
+			children = (
+				65C56F8B2054FFA000B3DFA9 /* Make.swift */,
+				65C56F932055131C00B3DFA9 /* Trim.swift */,
+				65BD2A9B2055B3D700FC71E4 /* Vehicle.swift */,
+				65C56F9120550C9500B3DFA9 /* SharedData.swift */,
+			);
+			path = "Non Persistent Data";
+			sourceTree = "<group>";
+		};
+		65BD2A9E2055C9CA00FC71E4 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				65C39971204E11AB00158177 /* Car_Finder.xcdatamodeld */,
+				65BD2A9F2055C9DF00FC71E4 /* DataController.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
 		65C3995E204E11AB00158177 = {
 			isa = PBXGroup;
 			children = (
@@ -149,7 +171,6 @@
 				65C39974204E11AB00158177 /* Assets.xcassets */,
 				65C39976204E11AB00158177 /* LaunchScreen.storyboard */,
 				65C39979204E11AB00158177 /* Info.plist */,
-				65C39971204E11AB00158177 /* Car_Finder.xcdatamodeld */,
 			);
 			path = "Car Finder";
 			sourceTree = "<group>";
@@ -204,10 +225,8 @@
 		65C3999D204E1D1600158177 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				65C56F8B2054FFA000B3DFA9 /* Make.swift */,
-				65C56F932055131C00B3DFA9 /* Trim.swift */,
-				65BD2A9B2055B3D700FC71E4 /* Vehicle.swift */,
-				65C56F9120550C9500B3DFA9 /* SharedData.swift */,
+				65BD2A9D2055C9B300FC71E4 /* Non Persistent Data */,
+				65BD2A9E2055C9CA00FC71E4 /* Core Data */,
 				65C56F812054910800B3DFA9 /* Clients */,
 			);
 			path = Model;
@@ -375,6 +394,7 @@
 				65C56F862054919A00B3DFA9 /* CarQueryConstants.swift in Sources */,
 				6594E04B20536AD100A7EA40 /* CompareSelectViewController.swift in Sources */,
 				65C399A9204E1E1D00158177 /* CompareTableViewController.swift in Sources */,
+				65BD2AA02055C9DF00FC71E4 /* DataController.swift in Sources */,
 				65C56F942055131C00B3DFA9 /* Trim.swift in Sources */,
 				65C56F8C2054FFA000B3DFA9 /* Make.swift in Sources */,
 				65C399AB204E1E3400158177 /* FavoritesTableViewController.swift in Sources */,
