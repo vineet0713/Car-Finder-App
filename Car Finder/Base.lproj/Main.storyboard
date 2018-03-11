@@ -200,7 +200,7 @@
             </objects>
             <point key="canvasLocation" x="1709.5999999999999" y="1421.7391304347827"/>
         </scene>
-        <!--Make-->
+        <!--Makes-->
         <scene sceneID="rqD-wI-NHi">
             <objects>
                 <tableViewController id="0gK-bS-prI" customClass="MakesTableViewController" customModule="Car_Finder" customModuleProvider="target" sceneMemberID="viewController">
@@ -264,7 +264,7 @@
                             <outlet property="delegate" destination="0gK-bS-prI" id="tUV-11-Fqh"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Make" id="Gi9-EO-rlB"/>
+                    <navigationItem key="navigationItem" title="Makes" id="Gi9-EO-rlB"/>
                     <connections>
                         <segue destination="hIR-bc-KSR" kind="show" identifier="makeToModelSegue" id="2R6-ma-722"/>
                     </connections>

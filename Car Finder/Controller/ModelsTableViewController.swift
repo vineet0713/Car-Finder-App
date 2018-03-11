@@ -15,15 +15,13 @@ class ModelsTableViewController: UITableViewController {
     var activityIndicator: UIActivityIndicatorView!
     let reuseIdentifier = "modelCell"
     
-    var models: [String] = []
-    
     var make: String! {
         willSet(newMake) {
             // set the title to the specified make
             self.title = newMake
         }
     }
-    var makeId: String! {
+    var makeID: String! {
         didSet {
             if activityIndicator != nil {
                 reload()
@@ -51,34 +49,46 @@ class ModelsTableViewController: UITableViewController {
     // MARK: - Helper Functions
     
     func reload() {
-        print("models are reloading")
         activityIndicator.startAnimating()
         
         DispatchQueue.global(qos: .userInitiated).async {
-            sleep(1)
+            // To show the activity indicator, even when connection speed is fast!
+            // sleep(1)
             
-            // get the data!
-            self.models = ["Mercedes-Benz", "Rolls-Royce", "Spyker", "Willys-Overland", "Zenvo"]
+            CarQueryClient.sharedInstance().getModelsFor(makeID: self.makeID, completionHandler: { (success, error) in
+                if success {
+                    DispatchQueue.main.async {
+                        self.tableView.separatorStyle = .singleLine
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    self.showAlert(title: "Load Failed", message: error!)
+                }
+            })
             
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
-                self.tableView.separatorStyle = .singleLine
-                self.tableView.reloadData()
             }
         }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Table View Data Source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return models.count
+        return SharedData.sharedInstance().models.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ModelTableViewCell
+        let model = SharedData.sharedInstance().models[indexPath.row]
         
-        cell.titleLabel.text = models[indexPath.row]
+        cell.titleLabel.text = model
         
         return cell
     }
@@ -86,8 +96,10 @@ class ModelsTableViewController: UITableViewController {
     // MARK: - Table View Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = SharedData.sharedInstance().models[indexPath.row]
+        
         // set the selected model to pass to the TrimTableViewController
-        selectedModel = models[indexPath.row]
+        selectedModel = model
         
         performSegue(withIdentifier: "modelToTrimSegue", sender: self)
     }
@@ -97,6 +109,8 @@ class ModelsTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? TrimsTableViewController {
+            SharedData.sharedInstance().trims.removeAll()
+            destinationVC.makeID = makeID
             destinationVC.model = selectedModel
         }
     }

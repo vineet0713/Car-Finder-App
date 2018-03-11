@@ -17,7 +17,7 @@ class FavoritesTableViewController: UITableViewController {
     var vehicles: [String] = []
     var trims: [String] = []
     
-    var selectedVehicleId: String!
+    var selectedModelID: String!
     
     // MARK: - Life Cycle
     
@@ -68,7 +68,7 @@ class FavoritesTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? VehicleViewController {
-            destinationVC.vehicleId = selectedVehicleId
+            destinationVC.modelID = selectedModelID
         }
     }
     

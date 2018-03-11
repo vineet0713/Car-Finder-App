@@ -20,7 +20,7 @@ class VehicleViewController: UIViewController {
     var titles: [String] = []
     var statistics: [String] = []
     
-    var vehicleId: String!
+    var modelID: String!
     var isFavorite: Bool!
     
     // MARK: - IBOutlets
@@ -57,6 +57,7 @@ class VehicleViewController: UIViewController {
         super.viewWillAppear(animated)
         
         activityIndicator.startAnimating()
+        modifyFavoriteButton.setTitle("", for: .normal)
         
         DispatchQueue.global(qos: .userInitiated).async {
             sleep(1)
@@ -65,14 +66,23 @@ class VehicleViewController: UIViewController {
             self.titles = ["Engine Position:", "Cylinders:", "Valves Per Cylinder:", "Type:", "Displacement (L):", "Horsepower:", "Torque (Lb-Ft):", "Fuel:", "Capacity (gal):", "Drive:", "Transmission:", "Weight (Lb):"]
             self.statistics = ["Front", "4", "4", "Inline", "1.8", "132", "null", "Regular Unleaded", "12", "Front Wheel Drive", "Automatic", "3042"]
             
+            CarQueryClient.sharedInstance().getModelFor(modelID: self.modelID, completionHandler: { (success, error) in
+                if success {
+                    DispatchQueue.main.async {
+                        self.updateFavoriteButtonText()
+                        self.tableView.separatorStyle = .singleLine
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    self.showAlert(title: "Load Failed", message: error!)
+                }
+            })
+            
             // use Core Data
             self.isFavorite = false
             
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
-                self.updateFavoriteButtonText()
-                self.tableView.separatorStyle = .singleLine
-                self.tableView.reloadData()
             }
         }
     }
@@ -102,6 +112,12 @@ class VehicleViewController: UIViewController {
         } else {
             modifyFavoriteButton.setTitle("Add Favorite", for: .normal)
         }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
 }

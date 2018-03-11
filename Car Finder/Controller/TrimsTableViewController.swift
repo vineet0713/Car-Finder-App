@@ -16,9 +16,7 @@ class TrimsTableViewController: UITableViewController {
     
     let reuseIdentifier = "trimCell"
     
-    var trims: [String] = []
-    var years: [String] = []
-    
+    var makeID: String!
     var model: String! {
         willSet(newModel) {
             // set the title to the specified make
@@ -29,7 +27,7 @@ class TrimsTableViewController: UITableViewController {
         }
     }
     
-    var selectedVehicleId: String!
+    var selectedModelID: String!
     
     // MARK: - Life Cycle
     
@@ -49,36 +47,47 @@ class TrimsTableViewController: UITableViewController {
     // MARK: - Helper Functions
     
     func reload() {
-        print("trims are reloading")
         activityIndicator.startAnimating()
         
         DispatchQueue.global(qos: .userInitiated).async {
-            sleep(1)
+            // To show the activity indicator, even when connection speed is fast!
+            // sleep(1)
             
-            // get the data!
-            self.trims = ["LP 700-4 2dr Coupe AWD (6.5L 12cyl 7AM)", "LP 700-4 Roadster 2dr Convertible AWD (6.5L 12cyl 7AM)"]
-            self.years = ["2018", "2018"]
+            CarQueryClient.sharedInstance().getTrimsFor(makeID: self.makeID, modelName: self.model, completionHandler: { (success, error) in
+                if success {
+                    DispatchQueue.main.async {
+                        self.tableView.separatorStyle = .singleLine
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    self.showAlert(title: "Load Failed", message: error!)
+                }
+            })
             
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
-                self.tableView.separatorStyle = .singleLine
-                self.tableView.reloadData()
             }
         }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Table View Data Source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return trims.count
+        return SharedData.sharedInstance().trims.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TrimTableViewCell
+        let trim = SharedData.sharedInstance().trims[indexPath.row]
         
-        cell.titleLabel.text = trims[indexPath.row]
-        cell.yearLabel.text = years[indexPath.row]
+        cell.titleLabel.text = trim.modelTrim
+        cell.yearLabel.text = trim.modelYear
         
         return cell
     }
@@ -86,7 +95,10 @@ class TrimsTableViewController: UITableViewController {
     // MARK: - Table View Delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let trim = SharedData.sharedInstance().trims[indexPath.row]
+        
         // set the selected vehicle to pass to the VehicleTableViewController
+        selectedModelID = trim.modelID
         
         performSegue(withIdentifier: "trimToVehicleSegue", sender: self)
     }
@@ -94,7 +106,7 @@ class TrimsTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? VehicleViewController {
-            destinationVC.vehicleId = selectedVehicleId
+            destinationVC.modelID = selectedModelID
         }
     }
     
