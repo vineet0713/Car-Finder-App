@@ -217,7 +217,28 @@ extension CarQueryClient {
                 return
             }
             
-            print(parsedResult)
+            // "flatten" the array of dictionaries into one dictionary!
+            let tupleArray: [(String, Any)] = parsedResult.flatMap { $0 }
+            let statisticDictionary = Dictionary(tupleArray, uniquingKeysWith: { (first, last) in last })
+            
+            var resultStatistics: [String] = []
+            
+            let resultKeys = CarQueryResponseKeys.statisticKeys
+            for key in resultKeys {
+                // if the statistic exists and is not null
+                if let statistic = statisticDictionary[key] as? String {
+                    // if the key is either MaxPower or MaxTorque
+                    if key == CarQueryResponseKeys.MaxPower || key == CarQueryResponseKeys.MaxTorque {
+                        resultStatistics.append(statistic + " RPM")
+                    } else {
+                        resultStatistics.append(statistic)
+                    }
+                } else {
+                    resultStatistics.append("[unavailable]")
+                }
+            }
+            
+            SharedData.sharedInstance().displayVehicle = Vehicle(statistics: resultStatistics)
             
             completionHandler(true, nil)
         }

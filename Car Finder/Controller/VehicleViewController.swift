@@ -17,9 +17,6 @@ class VehicleViewController: UIViewController {
     let reuseIdentifier = "vehicleCell"
     let removeMessage = "Are you sure you want to remove this vehicle from your favorites list?"
     
-    var titles: [String] = []
-    var statistics: [String] = []
-    
     var modelID: String!
     var isFavorite: Bool!
     
@@ -60,11 +57,8 @@ class VehicleViewController: UIViewController {
         modifyFavoriteButton.setTitle("", for: .normal)
         
         DispatchQueue.global(qos: .userInitiated).async {
-            sleep(1)
-            
-            // get the data!
-            self.titles = ["Engine Position:", "Cylinders:", "Valves Per Cylinder:", "Type:", "Displacement (L):", "Horsepower:", "Torque (Lb-Ft):", "Fuel:", "Capacity (gal):", "Drive:", "Transmission:", "Weight (Lb):"]
-            self.statistics = ["Front", "4", "4", "Inline", "1.8", "132", "null", "Regular Unleaded", "12", "Front Wheel Drive", "Automatic", "3042"]
+            // To show the activity indicator, even when connection speed is fast!
+            // sleep(1)
             
             CarQueryClient.sharedInstance().getModelFor(modelID: self.modelID, completionHandler: { (success, error) in
                 if success {
@@ -125,15 +119,20 @@ class VehicleViewController: UIViewController {
 extension VehicleViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return titles.count
+        if let vehicle = SharedData.sharedInstance().displayVehicle {
+            return vehicle.titles.count
+        } else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! VehicleTableViewCell
+        let title = SharedData.sharedInstance().displayVehicle!.titles[indexPath.row] + ":"
+        let statistic = SharedData.sharedInstance().displayVehicle!.statistics[indexPath.row]
         
-        cell.titleLabel.text = titles[indexPath.row]
-        cell.statisticLabel.text = statistics[indexPath.row]
+        cell.titleLabel.text = title
+        cell.statisticLabel.text = statistic
         
         return cell
     }

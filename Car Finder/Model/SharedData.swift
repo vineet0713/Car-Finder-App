@@ -16,6 +16,10 @@ class SharedData {
     var models: [String] = []   // since a 'Model' has just one attribute (modelName)!
     var trims: [Trim] = []
     
+    var displayVehicle: Vehicle?
+    var firstComparisonVehicle: Vehicle?
+    var secondComparisonVehicle: Vehicle?
+    
     // MARK: Initializers
     
     private init() {}
