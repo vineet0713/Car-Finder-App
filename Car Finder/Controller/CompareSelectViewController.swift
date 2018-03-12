@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class CompareSelectViewController: UIViewController {
     
@@ -14,10 +15,9 @@ class CompareSelectViewController: UIViewController {
     
     let reuseIdentifier = "selectFavoriteCell"
     
-    var vehicles: [String] = []
-    var trims: [String] = []
+    var favorites: [Favorite] = []
     
-    var selectedVehicleId: String!
+    var selectedFavorite: Favorite!
     
     // MARK: - IBOutlets
     
@@ -40,35 +40,56 @@ class CompareSelectViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // load favorites from Core Data!
-        vehicles = ["2018 Toyota Prius", "2018 Lamborghini Aventador"]
-        trims = ["Five 4dr Hatchback (1.8L 4cyl gas/electric hybrid CVT)", "LP 700-4 2dr Coupe AWD (6.5L 12cyl 7AM)"]
+        makeFetchRequest()
+        
+        updateTableSeparatorStyle()
+        
+        tableView.reloadData()
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // MARK: - Helper Functions
+    
+    func makeFetchRequest() {
+        let fetchRequest: NSFetchRequest<Favorite> = Favorite.fetchRequest()
+        
+        // order doesn't matter, so no need to use NSSortDescriptors
+        fetchRequest.sortDescriptors = []
+        
+        if let result = try? DataController.sharedInstance().viewContext.fetch(fetchRequest) {
+            favorites = result
+        } else {
+            showAlert(title: "Unable to Load Favorites", message: "The fetch could not be performed.")
+        }
     }
-    */
-
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func updateTableSeparatorStyle() {
+        if favorites.count == 0 {
+            tableView.separatorStyle = .none
+        } else {
+            tableView.separatorStyle = .singleLine
+        }
+    }
+    
 }
 
 extension CompareSelectViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return vehicles.count
+        return favorites.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SelectTableViewCell
+        let favorite = favorites[indexPath.row]
         
-        cell.titleLabel.text = vehicles[indexPath.row]
-        cell.trimLabel.text = trims[indexPath.row]
+        cell.titleLabel.text = favorite.modelTitle
+        cell.trimLabel.text = favorite.modelTrim
         
         return cell
     }
@@ -78,9 +99,10 @@ extension CompareSelectViewController: UITableViewDataSource {
 extension CompareSelectViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // set the selected vehicle to pass to the VehicleTableViewController
+        // set the selected Favorite to pass to the VehicleTableViewController
+        selectedFavorite = favorites[indexPath.row]
         
-        self.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "unwindToCompareSetup", sender: self)
     }
     
 }

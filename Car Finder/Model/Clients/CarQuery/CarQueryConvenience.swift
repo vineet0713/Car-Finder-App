@@ -189,7 +189,7 @@ extension CarQueryClient {
         task.resume()
     }
     
-    func getModelFor(modelID: String, completionHandler: @escaping (_ success: Bool, _ errorDescription: String?)->Void) {
+    func getModelFor(modelID: String, vehicleToSave: String, completionHandler: @escaping (_ success: Bool, _ errorDescription: String?)->Void) {
         let methodParameters: [String:Any] = [CarQueryParameterKeys.Method: CarQueryParameterValues.GetModelMethod,
                                               CarQueryParameterKeys.Model: modelID]
         let request = URLRequest(url: carqueryURLFromParameters(methodParameters))
@@ -266,7 +266,17 @@ extension CarQueryClient {
                 return
             }
             
-            SharedData.sharedInstance().displayVehicle = Vehicle(statistics: resultStatistics, title: modelTitle, trim: modelTrim)
+            switch vehicleToSave {
+            case "display":
+                SharedData.sharedInstance().displayVehicle = Vehicle(statistics: resultStatistics, title: modelTitle, trim: modelTrim)
+            case "firstComparison":
+                SharedData.sharedInstance().firstComparisonVehicle = Vehicle(statistics: resultStatistics, title: modelTitle, trim: modelTrim)
+            case "secondComparison":
+                SharedData.sharedInstance().secondComparisonVehicle = Vehicle(statistics: resultStatistics, title: modelTitle, trim: modelTrim)
+            default:
+                // this should never be executed
+                SharedData.sharedInstance().displayVehicle = Vehicle(statistics: resultStatistics, title: modelTitle, trim: modelTrim)
+            }
             
             completionHandler(true, nil)
         }

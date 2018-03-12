@@ -533,9 +533,11 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="2Vj-Qe-xXd" id="9va-mb-aHG"/>
+                        <segue destination="RGd-pg-C3i" kind="unwind" identifier="unwindToCompareSetup" unwindAction="unwindFromSelectFavorite:" id="Y7a-9T-Gdf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A0Y-fq-efN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="RGd-pg-C3i" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2629.5999999999999" y="-195.6521739130435"/>
         </scene>

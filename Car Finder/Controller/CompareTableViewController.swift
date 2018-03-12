@@ -16,12 +16,8 @@ class CompareTableViewController: UITableViewController {
     
     let reuseIdentifier = "compareCell"
     
-    var titles: [String] = []
-    var firstStatistics: [String] = []
-    var secondStatistics: [String] = []
-    
-    var firstVehicleId: String!
-    var secondVehicleId: String!
+    var firstVehicleID: String!
+    var secondVehicleID: String!
     
     // MARK: - Life Cycle
     
@@ -44,46 +40,66 @@ class CompareTableViewController: UITableViewController {
         activityIndicator.startAnimating()
         
         DispatchQueue.global(qos: .userInitiated).async {
-            sleep(1)
+            // To show the activity indicator, even when connection speed is fast!
+            // sleep(1)
             
-            // get the data!
-            self.titles = ["Engine Position:", "Cylinders:", "Valves Per Cylinder:", "Type:", "Displacement (L):", "Horsepower:", "Torque (Lb-Ft):", "Fuel:", "Capacity (gal):", "Drive:", "Transmission:", "Weight (Lb):"]
-            self.firstStatistics = ["Front", "4", "4", "Inline", "1.8", "132", "null", "Regular Unleaded", "12", "Front Wheel Drive", "Automatic", "3042"]
-            self.secondStatistics = ["Front", "4", "4", "Inline", "1.8", "132", "null", "Regular Unleaded", "12", "Front Wheel Drive", "Automatic", "3042"]
+            var firstLoadSucceeded = true
+            
+            CarQueryClient.sharedInstance().getModelFor(modelID: self.firstVehicleID, vehicleToSave: "firstComparison", completionHandler: { (success, error) in
+                if success == false {
+                    firstLoadSucceeded = false
+                    self.showAlert(title: "Load Failed", message: error!)
+                }
+            })
+            
+            CarQueryClient.sharedInstance().getModelFor(modelID: self.secondVehicleID, vehicleToSave: "secondComparison", completionHandler: { (success, error) in
+                if success {
+                    if firstLoadSucceeded {
+                        DispatchQueue.main.async {
+                            self.tableView.separatorStyle = .singleLine
+                            self.tableView.reloadData()
+                        }
+                    }
+                } else {
+                    self.showAlert(title: "Load Failed", message: error!)
+                }
+            })
             
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
-                self.tableView.separatorStyle = .singleLine
-                self.tableView.reloadData()
             }
         }
+    }
+    
+    // MARK: - Helper Functions
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Table View Data Source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return titles.count
+        if let vehicle = SharedData.sharedInstance().firstComparisonVehicle {
+            return vehicle.titles.count
+        } else {
+            return 0
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! CompareTableViewCell
+        let title = SharedData.sharedInstance().firstComparisonVehicle!.titles[indexPath.row] + ":"
+        let firstStatistic = SharedData.sharedInstance().firstComparisonVehicle!.statistics[indexPath.row]
+        let secondStatistic = SharedData.sharedInstance().secondComparisonVehicle!.statistics[indexPath.row]
         
-        cell.titleLabel.text = titles[indexPath.row]
-        cell.firstStatisticLabel.text = firstStatistics[indexPath.row]
-        cell.secondStatisticLabel.text = secondStatistics[indexPath.row]
+        cell.titleLabel.text = title
+        cell.firstStatisticLabel.text = firstStatistic
+        cell.secondStatisticLabel.text = secondStatistic
         
         return cell
     }
     
-    /*
-    // MARK: - Navigation
-     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

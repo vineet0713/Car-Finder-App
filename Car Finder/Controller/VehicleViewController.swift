@@ -61,7 +61,7 @@ class VehicleViewController: UIViewController {
             // To show the activity indicator, even when connection speed is fast!
             // sleep(1)
             
-            CarQueryClient.sharedInstance().getModelFor(modelID: self.modelID, completionHandler: { (success, error) in
+            CarQueryClient.sharedInstance().getModelFor(modelID: self.modelID, vehicleToSave: "display", completionHandler: { (success, error) in
                 if success {
                     DispatchQueue.main.async {
                         self.tableView.separatorStyle = .singleLine
@@ -146,7 +146,7 @@ class VehicleViewController: UIViewController {
     
     func removeFavorite() {
         let alert = UIAlertController(title: "Confirm Remove", message: removeMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action) in
             DataController.sharedInstance().viewContext.delete(self.favorite!)
             self.favorite = nil

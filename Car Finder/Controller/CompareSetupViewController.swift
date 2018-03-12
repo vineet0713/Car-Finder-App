@@ -15,6 +15,12 @@ class CompareSetupViewController: UIViewController {
     let firstDefaultTitle = "Vehicle 1"
     let secondDefaultTitle = "Vehicle 2"
     
+    var firstModelID: String?
+    var secondModelID: String?
+    
+    var firstIsModified: Bool!
+    var invalidComparisonMessage: String?
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var firstTitleLabel: UILabel!
@@ -30,15 +36,46 @@ class CompareSetupViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func firstModify(_ sender: Any) {
+        firstIsModified = true
         performSegue(withIdentifier: "setupToSelectSegue", sender: self)
     }
     
     @IBAction func secondModify(_ sender: Any) {
+        firstIsModified = false
         performSegue(withIdentifier: "setupToSelectSegue", sender: self)
     }
     
     @IBAction func compare(_ sender: Any) {
         performSegue(withIdentifier: "setupToCompareSegue", sender: self)
+    }
+    
+    // first create this function
+    // then on storyboard, drag from the source VC (or CompareSelectVC in this case) to its own exit button
+    // select this function
+    // link: https://www.andrewcbancroft.com/2015/12/18/working-with-unwind-segues-programmatically-in-swift/
+    @IBAction func unwindFromSelectFavorite(_ sender: UIStoryboardSegue) {
+        if let sourceVC = sender.source as? CompareSelectViewController {
+            if firstIsModified {
+                // makes sure that the user's second selected car is different from the first!
+                if secondModelID != nil && secondModelID! == sourceVC.selectedFavorite.modelID {
+                    invalidComparisonMessage = "Please select a different car than the second."
+                } else {
+                    firstTitleLabel.text = sourceVC.selectedFavorite.modelTitle
+                    firstTrimLabel.text = sourceVC.selectedFavorite.modelTrim
+                    firstModelID = sourceVC.selectedFavorite.modelID
+                }
+            } else {
+                // makes sure that the user's first selected car is different from the second!
+                if firstModelID != nil && firstModelID! == sourceVC.selectedFavorite.modelID {
+                    invalidComparisonMessage = "Please select a different car than the first."
+                } else {
+                    secondTitleLabel.text = sourceVC.selectedFavorite.modelTitle
+                    secondTrimLabel.text = sourceVC.selectedFavorite.modelTrim
+                    secondModelID = sourceVC.selectedFavorite.modelID
+                }
+            }
+            updateCompareButton()
+        }
     }
     
     // MARK: - Life Cycle
@@ -48,16 +85,50 @@ class CompareSetupViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        firstModelID = nil
+        secondModelID = nil
+        compareButton.isEnabled = false
+        
+        invalidComparisonMessage = nil
+        
         firstTitleLabel.text = firstDefaultTitle
         secondTitleLabel.text = secondDefaultTitle
+        firstTrimLabel.text = ""
+        secondTrimLabel.text = ""
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let message = invalidComparisonMessage {
+            showAlert(title: "Invalid Comparison", message: message)
+            invalidComparisonMessage = nil
+        }
+    }
+    
+    // MARK: - Helper Functions
+    
+    func updateCompareButton() {
+        compareButton.isEnabled = (firstModelID != nil && secondModelID != nil)
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let destinationVC = segue.destination as? CompareTableViewController {
+            SharedData.sharedInstance().firstComparisonVehicle = nil
+            SharedData.sharedInstance().secondComparisonVehicle = nil
+            
+            destinationVC.firstVehicleID = firstModelID
+            destinationVC.secondVehicleID = secondModelID
+        }
     }
     
 }

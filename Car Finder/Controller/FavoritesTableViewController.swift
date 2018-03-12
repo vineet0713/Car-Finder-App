@@ -31,12 +31,6 @@ class FavoritesTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        /*
-        // load favorites from Core Data!
-        vehicles = ["2018 Toyota Prius", "2018 Lamborghini Aventador"]
-        trims = ["Five 4dr Hatchback (1.8L 4cyl gas/electric hybrid CVT)", "LP 700-4 2dr Coupe AWD (6.5L 12cyl 7AM)"]
-        */
-        
         makeFetchRequest()
         
         updateTableSeparatorStyle()
