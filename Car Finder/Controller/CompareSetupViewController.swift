@@ -74,7 +74,7 @@ class CompareSetupViewController: UIViewController {
                     secondModelID = sourceVC.selectedFavorite.modelID
                 }
             }
-            updateCompareButton()
+            updateButtonTexts()
         }
     }
     
@@ -87,7 +87,10 @@ class CompareSetupViewController: UIViewController {
         
         firstModelID = nil
         secondModelID = nil
+        
         compareButton.isEnabled = false
+        firstModifyButton.setTitle("Choose", for: .normal)
+        secondModifyButton.setTitle("Choose", for: .normal)
         
         invalidComparisonMessage = nil
         
@@ -108,8 +111,14 @@ class CompareSetupViewController: UIViewController {
     
     // MARK: - Helper Functions
     
-    func updateCompareButton() {
+    func updateButtonTexts() {
         compareButton.isEnabled = (firstModelID != nil && secondModelID != nil)
+        
+        let firstModifyText = (firstModelID == nil) ? "Choose" : "Change"
+        let secondModifyText = (secondModelID == nil) ? "Choose" : "Change"
+        
+        firstModifyButton.setTitle(firstModifyText, for: .normal)
+        secondModifyButton.setTitle(secondModifyText, for: .normal)
     }
     
     func showAlert(title: String, message: String) {

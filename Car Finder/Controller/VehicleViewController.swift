@@ -107,7 +107,6 @@ class VehicleViewController: UIViewController {
     func addFavorite() {
         let vehicle = SharedData.sharedInstance().displayVehicle
         
-        /*
         DataController.sharedInstance().backgroundContext.perform {
             // should not access any UI elements, since UIKit is NOT thread-safe!
             
@@ -115,33 +114,24 @@ class VehicleViewController: UIViewController {
             self.favorite = Favorite(context: DataController.sharedInstance().backgroundContext)
             self.favorite!.modelID = self.modelID
             self.favorite!.modelTitle = vehicle!.title
-            self.favorite!.modelTrim = vehicle!.trim
+            if vehicle!.trim == "" {
+                self.favorite!.modelTrim = "[trim unavailable]"
+            } else {
+                self.favorite!.modelTrim = vehicle!.trim
+            }
             
             // tries to save the Photo to Core Data
             guard DataController.sharedInstance().saveBackgroundContext() else {
-                self.showAlert(title: "Save Failed", message: "Could not save the Photo to Core Data.")
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Save Failed", message: "Could not save the Photo to Core Data.")
+                }
                 return
             }
+            
+            DispatchQueue.main.async {
+                self.updateFavoriteButtonText()
+            }
         }
-        */
-        
-        // initializes the new Photo
-        self.favorite = Favorite(context: DataController.sharedInstance().viewContext)
-        self.favorite!.modelID = self.modelID
-        self.favorite!.modelTitle = vehicle!.title
-        if vehicle!.trim == "" {
-            self.favorite!.modelTrim = "[trim unavailable]"
-        } else {
-            self.favorite!.modelTrim = vehicle!.trim
-        }
-        
-        // tries to save the Photo to Core Data
-        guard DataController.sharedInstance().saveViewContext() else {
-            self.showAlert(title: "Save Failed", message: "Could not save the Photo to Core Data.")
-            return
-        }
-        
-        updateFavoriteButtonText()
     }
     
     func removeFavorite() {
@@ -174,6 +164,8 @@ class VehicleViewController: UIViewController {
     }
     
 }
+
+// MARK: - Table View Data Source
 
 extension VehicleViewController: UITableViewDataSource {
     

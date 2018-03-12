@@ -248,17 +248,14 @@ extension CarQueryClient {
                 completionHandler(false, "Could not find the key \(CarQueryResponseKeys.ModelYear).")
                 return
             }
-            
             guard let makeName = statisticDictionary[CarQueryResponseKeys.MakeDisplay] as? String else {
                 completionHandler(false, "Could not find the key \(CarQueryResponseKeys.MakeDisplay).")
                 return
             }
-            
             guard let modelName = statisticDictionary[CarQueryResponseKeys.ModelName] as? String else {
                 completionHandler(false, "Could not find the key \(CarQueryResponseKeys.ModelName).")
                 return
             }
-            
             let modelTitle = modelYear + " " + makeName + " " + modelName
             
             guard let modelTrim = statisticDictionary[CarQueryResponseKeys.ModelTrim] as? String else {

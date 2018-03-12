@@ -22,6 +22,7 @@ class CompareSelectViewController: UIViewController {
     // MARK: - IBOutlets
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var noFavoritesLabel: UILabel!
     
     // MARK: - IBActions
     
@@ -31,20 +32,16 @@ class CompareSelectViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         makeFetchRequest()
         
-        updateTableSeparatorStyle()
+        updateTableAndLabel()
         
-        tableView.reloadData()
+        if (favorites.count > 0) {
+            tableView.reloadData()
+        }
     }
     
     // MARK: - Helper Functions
@@ -68,15 +65,14 @@ class CompareSelectViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func updateTableSeparatorStyle() {
-        if favorites.count == 0 {
-            tableView.separatorStyle = .none
-        } else {
-            tableView.separatorStyle = .singleLine
-        }
+    func updateTableAndLabel() {
+        tableView.isHidden = (favorites.count == 0)
+        noFavoritesLabel.isHidden = (favorites.count > 0)
     }
     
 }
+
+// MARK: - Table View Data Source
 
 extension CompareSelectViewController: UITableViewDataSource {
     
@@ -95,6 +91,8 @@ extension CompareSelectViewController: UITableViewDataSource {
     }
     
 }
+
+// MARK: - Table View Delegate
 
 extension CompareSelectViewController: UITableViewDelegate {
     

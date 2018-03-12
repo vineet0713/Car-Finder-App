@@ -507,6 +507,12 @@
                                     <outlet property="delegate" destination="fpJ-gJ-5Lk" id="8NW-e3-Si3"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Favorites!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2t-Ne-Ptp">
+                                <rect key="frame" x="16" y="323" width="343" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRj-HX-WwA">
                                 <rect key="frame" x="300" y="20" width="59" height="30"/>
                                 <constraints>
@@ -521,10 +527,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="l2t-Ne-Ptp" firstAttribute="centerY" secondItem="y0A-Uf-W7K" secondAttribute="centerY" id="Jt8-Zb-5Gy"/>
                             <constraint firstItem="BRj-HX-WwA" firstAttribute="top" secondItem="5zq-dJ-3p8" secondAttribute="top" id="KUi-uS-3RI"/>
+                            <constraint firstItem="5zq-dJ-3p8" firstAttribute="bottom" secondItem="l2t-Ne-Ptp" secondAttribute="bottom" constant="323" id="Oh0-ny-RIl"/>
                             <constraint firstItem="BRj-HX-WwA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="y0A-Uf-W7K" secondAttribute="leadingMargin" id="RYs-6V-Nhd"/>
                             <constraint firstAttribute="trailing" secondItem="2Vj-Qe-xXd" secondAttribute="trailing" id="Rzy-KX-ejU"/>
                             <constraint firstItem="2Vj-Qe-xXd" firstAttribute="bottom" secondItem="5zq-dJ-3p8" secondAttribute="bottom" id="bas-LZ-ebY"/>
+                            <constraint firstItem="l2t-Ne-Ptp" firstAttribute="trailing" secondItem="BRj-HX-WwA" secondAttribute="trailing" id="jbE-Yg-2k3"/>
+                            <constraint firstItem="l2t-Ne-Ptp" firstAttribute="centerX" secondItem="2Vj-Qe-xXd" secondAttribute="centerX" id="l04-Pn-onf"/>
                             <constraint firstItem="2Vj-Qe-xXd" firstAttribute="top" secondItem="BRj-HX-WwA" secondAttribute="bottom" constant="8" symbolic="YES" id="tdZ-EO-diR"/>
                             <constraint firstItem="BRj-HX-WwA" firstAttribute="trailing" secondItem="y0A-Uf-W7K" secondAttribute="trailingMargin" id="wFZ-bA-gEX"/>
                             <constraint firstItem="2Vj-Qe-xXd" firstAttribute="leading" secondItem="y0A-Uf-W7K" secondAttribute="leading" id="wYj-dh-nCe"/>
@@ -532,6 +542,7 @@
                         <viewLayoutGuide key="safeArea" id="5zq-dJ-3p8"/>
                     </view>
                     <connections>
+                        <outlet property="noFavoritesLabel" destination="l2t-Ne-Ptp" id="PMl-xi-4Go"/>
                         <outlet property="tableView" destination="2Vj-Qe-xXd" id="9va-mb-aHG"/>
                         <segue destination="RGd-pg-C3i" kind="unwind" identifier="unwindToCompareSetup" unwindAction="unwindFromSelectFavorite:" id="Y7a-9T-Gdf"/>
                     </connections>
