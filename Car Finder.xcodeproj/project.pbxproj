@@ -17,7 +17,6 @@
 		6594E04B20536AD100A7EA40 /* CompareSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594E04A20536AD100A7EA40 /* CompareSelectViewController.swift */; };
 		6594E04D205373EA00A7EA40 /* SelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594E04C205373EA00A7EA40 /* SelectTableViewCell.swift */; };
 		6594E04F2053767200A7EA40 /* CompareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6594E04E2053767200A7EA40 /* CompareTableViewCell.swift */; };
-		6595B6A72058CAF6009AA6C8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6595B6A62058CAF6009AA6C8 /* README.md */; };
 		65BD2A9C2055B3D700FC71E4 /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD2A9B2055B3D700FC71E4 /* Vehicle.swift */; };
 		65BD2AA02055C9DF00FC71E4 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD2A9F2055C9DF00FC71E4 /* DataController.swift */; };
 		65C3996B204E11AB00158177 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C3996A204E11AB00158177 /* AppDelegate.swift */; };
@@ -68,7 +67,6 @@
 		6594E04A20536AD100A7EA40 /* CompareSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareSelectViewController.swift; sourceTree = "<group>"; };
 		6594E04C205373EA00A7EA40 /* SelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTableViewCell.swift; sourceTree = "<group>"; };
 		6594E04E2053767200A7EA40 /* CompareTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareTableViewCell.swift; sourceTree = "<group>"; };
-		6595B6A62058CAF6009AA6C8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../../../../Desktop/README.md; sourceTree = "<group>"; };
 		65BD2A9B2055B3D700FC71E4 /* Vehicle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicle.swift; sourceTree = "<group>"; };
 		65BD2A9F2055C9DF00FC71E4 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		65C39967204E11AB00158177 /* Car Finder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Car Finder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +143,6 @@
 		65C3995E204E11AB00158177 = {
 			isa = PBXGroup;
 			children = (
-				6595B6A62058CAF6009AA6C8 /* README.md */,
 				65C39969204E11AB00158177 /* Car Finder */,
 				65C39981204E11AB00158177 /* Car FinderTests */,
 				65C3998C204E11AB00158177 /* Car FinderUITests */,
@@ -362,7 +359,6 @@
 			files = (
 				65C39978204E11AB00158177 /* LaunchScreen.storyboard in Resources */,
 				65C39975204E11AB00158177 /* Assets.xcassets in Resources */,
-				6595B6A72058CAF6009AA6C8 /* README.md in Resources */,
 				65C39970204E11AB00158177 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
