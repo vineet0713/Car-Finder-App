@@ -56,29 +56,28 @@ class VehicleViewController: UIViewController {
         
         activityIndicator.startAnimating()
         modifyFavoriteButton.setTitle("", for: .normal)
+        modifyFavoriteButton.isEnabled = false
         
         DispatchQueue.global(qos: .userInitiated).async {
             // To show the activity indicator, even when connection speed is fast!
             // sleep(1)
             
             CarQueryClient.sharedInstance().getModelFor(modelID: self.modelID, vehicleToSave: "display", completionHandler: { (success, error) in
-                if success {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if success {
                         self.tableView.separatorStyle = .singleLine
                         self.tableView.reloadData()
+                    } else {
+                        self.showAlert(title: "Load Failed", message: error!)
                     }
-                } else {
-                    self.showAlert(title: "Load Failed", message: error!)
+                    self.activityIndicator.stopAnimating()
+                    self.modifyFavoriteButton.isEnabled = true
                 }
             })
-            
-            self.makeFetchRequest()
-            
-            DispatchQueue.main.async {
-                self.updateFavoriteButtonText()
-                self.activityIndicator.stopAnimating()
-            }
         }
+        
+        makeFetchRequest()
+        updateFavoriteButtonText()
     }
     
     // MARK: - Helper Functions

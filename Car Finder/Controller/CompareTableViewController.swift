@@ -48,26 +48,25 @@ class CompareTableViewController: UITableViewController {
             CarQueryClient.sharedInstance().getModelFor(modelID: self.firstVehicleID, vehicleToSave: "firstComparison", completionHandler: { (success, error) in
                 if success == false {
                     firstLoadSucceeded = false
-                    self.showAlert(title: "Load Failed", message: error!)
+                    DispatchQueue.main.async {
+                        self.showAlert(title: "Load Failed", message: error!)
+                    }
                 }
             })
             
             CarQueryClient.sharedInstance().getModelFor(modelID: self.secondVehicleID, vehicleToSave: "secondComparison", completionHandler: { (success, error) in
-                if success {
-                    if firstLoadSucceeded {
-                        DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if success {
+                        if firstLoadSucceeded {
                             self.tableView.separatorStyle = .singleLine
                             self.tableView.reloadData()
                         }
+                    } else {
+                        self.showAlert(title: "Load Failed", message: error!)
                     }
-                } else {
-                    self.showAlert(title: "Load Failed", message: error!)
+                    self.activityIndicator.stopAnimating()
                 }
             })
-            
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-            }
         }
     }
     

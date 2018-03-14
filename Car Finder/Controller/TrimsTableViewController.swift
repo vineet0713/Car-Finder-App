@@ -54,19 +54,16 @@ class TrimsTableViewController: UITableViewController {
             // sleep(1)
             
             CarQueryClient.sharedInstance().getTrimsFor(makeID: self.makeID, modelName: self.model, completionHandler: { (success, error) in
-                if success {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if success {
                         self.tableView.separatorStyle = .singleLine
                         self.tableView.reloadData()
+                    } else {
+                        self.showAlert(title: "Load Failed", message: error!)
                     }
-                } else {
-                    self.showAlert(title: "Load Failed", message: error!)
+                    self.activityIndicator.stopAnimating()
                 }
             })
-            
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-            }
         }
     }
     
