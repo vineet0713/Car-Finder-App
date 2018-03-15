@@ -59,12 +59,6 @@ class CompareSelectViewController: UIViewController {
         }
     }
     
-    func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     func updateTableAndLabel() {
         tableView.isHidden = (favorites.count == 0)
         noFavoritesLabel.isHidden = (favorites.count > 0)

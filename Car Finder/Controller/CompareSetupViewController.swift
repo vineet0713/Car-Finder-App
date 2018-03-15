@@ -121,12 +121,6 @@ class CompareSetupViewController: UIViewController {
         secondModifyButton.setTitle(secondModifyText, for: .normal)
     }
     
-    func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
