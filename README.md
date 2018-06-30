@@ -8,6 +8,5 @@ This app allows users to search for vehicles and compare them using their perfor
 * uses the CarQuery API to fetch vehicle data
 
 ## Requirements
-* iOS 11.0+
+* iOS 10.3+
 * Xcode 9.2
-* Swift 4.0+
