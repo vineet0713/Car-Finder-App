@@ -1,4 +1,4 @@
-# Car Finder
+# Car Explorer
 This app allows users to search for vehicles and compare them using their performance data.
 
 ## Features
